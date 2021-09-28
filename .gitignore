@@ -3,3 +3,4 @@ dist
 static/svelte.css
 static/renderer.js
 ~*
+config.json
