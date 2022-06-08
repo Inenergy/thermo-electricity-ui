@@ -40,7 +40,7 @@
     "usb-detection": "^4.7.0"
   },
   "build": {
-    "rebuildDependencies": false,
+    "npmRebuild": false,
     "linux": {
       "executableName": "thermo-electricity-ui",
       "category": "education"
