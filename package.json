@@ -8,7 +8,7 @@
     "wp-build": "cross-env NODE_ENV=production webpack",
     "el-watch": "electron .",
     "build": "run-s wp-build el-build",
-    "el-build": "electron-builder --dir --armv7l --linux",
+    "el-build": "electron-builder --armv7l --linux",
     "dev": "run-p wp-watch el-watch",
     "postinstall": "electron-builder install-app-deps",
     "test": "jest"
