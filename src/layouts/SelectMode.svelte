@@ -1,3 +1,4 @@
+<!-- Начальная страница с двумя большими кнопками -->
 <script>
   import { STATES } from '../constants';
   import { slide } from '../transitions';

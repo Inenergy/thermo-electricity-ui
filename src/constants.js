@@ -1,5 +1,6 @@
 const { concat, countKeys } = require('./utils/others');
 
+// общие состояние приложения для смены страниц
 const STATES = {
   temp: 'temp',
   effects: 'effects',
@@ -7,10 +8,12 @@ const STATES = {
   initial: 'initial',
 };
 
+// разделители в двоичном виде
 const SEPARATOR = Buffer.alloc(4);
 SEPARATOR.writeUInt16BE(25978);
 SEPARATOR.writeUInt16BE(42105, 2);
 
+// Параметры интегрированных элеметов Пельтье, двухбайтовые значения
 const INTEGRATED_PELTIER_PARAMS = {
   voltage: {
     label: 'voltage',
@@ -62,6 +65,7 @@ const INTEGRATED_PELTIER_PARAMS = {
   },
 };
 
+// параметры поключаемого элемента Пельтье, двухбайтовые значения
 const PROBE_PELTIER_PARAMS = {
   voltage: {
     label: 'voltage',
@@ -89,6 +93,7 @@ const PROBE_PELTIER_PARAMS = {
   },
 };
 
+// однобайтовые значения о состоянии элементов Пельтье
 const PELTIER_STATE = {
   state: {
     label: 'state',
@@ -98,11 +103,13 @@ const PELTIER_STATE = {
   },
 };
 
+// слияние всех двухбайтовых значений в один массив с переименованием
 const PELTIER_PARAMS = concat(
   [INTEGRATED_PELTIER_PARAMS, PROBE_PELTIER_PARAMS, INTEGRATED_PELTIER_PARAMS],
   ['Cool', 'Probe', 'Hot']
 );
 
+// добавление оставшихся двухбайтовых значений
 PELTIER_PARAMS.flipSideTemp = {
   label: 'temperature',
   units: '\u02daC',
@@ -111,17 +118,22 @@ PELTIER_PARAMS.flipSideTemp = {
   signed: true,
 };
 
+// слияние однобайтовых значений в один массив с переименованием
 const PELTIER_STATES = concat(Array(3).fill(PELTIER_STATE), [
   'Cool',
   'Probe',
   'Hot',
 ]);
 
+// слияние вообще всех значений в одну структуру
 const DATA_ENTRIES = {
   ...PELTIER_PARAMS,
   ...PELTIER_STATES,
 };
 
+/* Комманды
+Либо просто массив для комманд без ввода данных
+Либо функция, которая принимает значение и возвращает массив для отправки */
 const COMMANDS = {
   turnOnCoolPeltier: 100,
   turnOffCoolPeltier: 104,
@@ -144,6 +156,7 @@ const COMMANDS = {
   setPowerProbePeltier: (v) => [220, v],
 };
 
+// ограничения полей ввода
 const PELTIER_CONSTRAINTS = {
   TempCool: [20, -5],
   TempHot: [20, 75],
@@ -155,6 +168,7 @@ const PELTIER_CONSTRAINTS = {
 
 const IS_RPI = process.platform === 'linux' && process.arch === 'arm';
 
+// идентификатор серийного порта для raspberry OS и linux
 const PORT = {
   name: IS_RPI ? '/dev/serial0' : 'COM5',
   baudRate: 230400,
@@ -162,6 +176,7 @@ const PORT = {
 
 const MODES = ['Power', 'Temp'];
 
+// общая длина принимаего массива данных для поверки посылки
 const BUFFER_LENGTH =
   countKeys(PELTIER_PARAMS) * 2 + countKeys(PELTIER_STATES) + SEPARATOR.length;
 
