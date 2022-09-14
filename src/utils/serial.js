@@ -70,6 +70,6 @@ function writeCommandFromQueue() {
 }
 
 emitter.sendCommand = sendCommand;
-emitter.close = serial.close;
+emitter.close = (cb) => serial.close(cb);
 
 module.exports = emitter;

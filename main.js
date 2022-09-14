@@ -54,7 +54,7 @@ function initPeripherals(win) {
   });
   return {
     removeAllListeners() {
-      serial.close();
+      serial.close(console.error);
       usbPort.removeAllListeners();
     },
   };
@@ -83,7 +83,7 @@ function launch() {
   const watcher = reloadOnChange(win);
   const peripherals = initPeripherals(win);
 
-  win.on('closed', function () {
+  win.on('close', function () {
     peripherals.removeAllListeners();
     win = null;
     watcher.close();
